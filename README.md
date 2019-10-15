@@ -11,3 +11,12 @@ when using MySQL in order to really stream the results we need to satisfy three 
 - Forward-only resultset
 - Read-only statement
 - Fetch-size set to Integer.MIN_VALUE
+# Summary
+- We've seen significant performance improvements when using streaming (via scrollable resultsets) vs paging, admittedly in a very specific task of exporting data.
+
+- Spring Data's new features give really convenient access to scrollable resultsets via streams.
+
+- There are gotchas to get it working with MySQL, but they are manageable.
+There are further restrictions when reading scrollable result sets in MySQL - no statement may be issued through the same database connection until the resultset is fully read.
+
+- The export works fine because we are writing results directly to HttpServletResponse. If we were using default Spring's message converters (e.g. returning stream from the controller method ) then there's a good chance this would not work as expected.
